@@ -93,7 +93,7 @@ crawler-project/
         └── templates/
 ```
 
-## 로컬 실행 방법
+## 실행 방법
 
 ```bash
 git clone https://github.com/ma1go2/crawler-project.git
@@ -102,7 +102,18 @@ cp .env.example .env   # 값 채우기
 docker compose up -d --build
 ```
 
-`http://localhost:8000` (또는 Nginx를 통할 경우 `http://localhost`)에서 확인 가능합니다.
+
+## 로컬 실행 방법
+
+```bash
+git clone https://github.com/ma1go2/crawler-project.git
+cd crawler-project
+cp .env.example .env   # 값 채우기
+docker compose up -d --build db web
+```
+- `docker-compose.yml` web 컨테이너의 expose: - "8000" → ports: - "8000:8000" 으로 변경합니다.
+- `http://localhost:8000` (또는 Nginx를 통할 경우 `http://localhost`)에서 확인 가능합니다.
+- `nginx`, `certbot`은 실제 도메인을 가진 운영 서버 전용 구성이라 로컬에서는 실행하지 않습니다. 전체 스택(운영 구성 포함)을 실행하려면 `docker compose up -d --build`로 모든 서비스를 띄우되, `nginx.conf`의 인증서 경로 때문에 `nginx_proxy`는 로컬에서 정상 동작하지 않는 점을 참고하세요.
 
 ## 대시보드 기능
 
