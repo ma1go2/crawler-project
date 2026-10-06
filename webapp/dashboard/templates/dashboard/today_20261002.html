@@ -1,0 +1,24 @@
+<h1>{{ today }} 크롤링 대시보드</h1>
+<p>오늘 신규 저장: <strong>{{ total_today }}</strong>건</p>
+
+<h2>사이트/키워드별 건수</h2>
+<table border="1">
+  <tr><th>사이트</th><th>키워드</th><th>건수</th></tr>
+  {% for row in today_counts %}
+  <tr><td>{{ row.site }}</td><td>{{ row.keyword }}</td><td>{{ row.posting_count }}</td></tr>
+  {% endfor %}
+</table>
+
+<h2>오늘 공고 목록</h2>
+<table border="1">
+  <tr><th>사이트</th><th>키워드</th><th>공고명</th><th>회사</th><th>지역</th><th>경력</th></tr>
+  {% for p in today_postings %}
+  <tr>
+    <td>{{ p.site }}</td><td>{{ p.keyword }}</td>
+    <td><a href="{{ p.link }}">{{ p.title }}</a></td>
+    <td>{{ p.company }}</td>
+    <td>{{ p.region_sido }}</td>
+    <td>{{ p.experience_category }}</td>
+  </tr>
+  {% endfor %}
+</table>
