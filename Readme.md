@@ -30,6 +30,19 @@
 ```
   0 9 * * 1-5 /home/ubuntu/crawler-project/run_crawler.sh >> /home/ubuntu/crawler-project/cron.log 2>&1
 ```
+- 크롤러 실행 로그는 `logrotate`로 주간 단위 관리됩니다 (`/etc/logrotate.d/crawler`).
+```
+/home/ubuntu/crawler-project/crawler.log {
+weekly
+rotate 4
+compress
+missingok
+notifempty
+copytruncate
+su ubuntu ubuntu
+}
+```
+  최근 4주치 로그만 압축 보관되며, `copytruncate`로 크롤러 실행 중에도 로그 파일을 끊김 없이 교체합니다.
 
 ## 기술 스택
 
