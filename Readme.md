@@ -76,8 +76,8 @@ crawler-project/
 ## 로컬 실행 방법
 
 ```bash
-git clone https://github.com/<본인계정>/<레포이름>.git
-cd <레포이름>
+git clone https://github.com/ma1go2/crawler-project.git
+cd crawler-project
 cp .env.example .env   # 값 채우기
 docker compose up -d --build
 ```
