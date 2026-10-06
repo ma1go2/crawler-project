@@ -24,6 +24,13 @@
 
 전체 스택은 Docker Compose로 컨테이너화되어 Oracle Cloud Infrastructure(OCI) 인스턴스에 배포되어 있습니다.
 
+## 운영 스케줄
+
+- 크롤러는 `crontab`으로 평일 오전 9시에 자동 실행되어 raw → staging → mart 전체 파이프라인을 갱신합니다.
+```
+  0 9 * * 1-5 /home/ubuntu/crawler-project/run_crawler.sh >> /home/ubuntu/crawler-project/cron.log 2>&1
+```
+
 ## 기술 스택
 
 | 영역 | 기술 |
