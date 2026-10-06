@@ -49,6 +49,7 @@ flowchart TB
 - Nginx가 HTTPS 종료 및 정적 파일 서빙을 담당, Django는 애플리케이션 로직에만 집중
 - Certbot 컨테이너가 12시간 주기로 인증서 갱신을 자동 체크 (`certbot renew`)
 - `crawler_app`은 상시 실행되는 컨테이너가 아니라, OCI 인스턴스의 `crontab`을 통해 **평일 오전 9시**에 실행되는 배치 작업입니다.
+- 크롤러 로그(`crawler.log`)는 `logrotate`로 주간 로테이션·4주 보관·압축 관리되어 디스크 용량 문제를 방지합니다.
 
 ## 3. 역할 분리 원칙
 
