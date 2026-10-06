@@ -1,0 +1,18 @@
+# 환경변수/시크릿
+.env
+
+# Python
+__pycache__/
+*.pyc
+venv/
+*.egg-info/
+
+# Django
+staticfiles/
+*.sqlite3
+
+# Docker
+*.log
+
+# OS
+.DS_Store
