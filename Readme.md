@@ -54,6 +54,81 @@ su ubuntu ubuntu
 | 인프라 | Docker, Docker Compose, Oracle Cloud Infrastructure |
 | 운영 | Nginx(리버스 프록시), Let's Encrypt(HTTPS), DuckDNS |
 
+## 데이터 모델
+
+> 테이블 간 물리적 FK 제약은 없으며, 점선은 변환·집계에 따른 논리적 관계입니다.
+
+```mermaid
+erDiagram
+    RAW_JOB_POSTINGS {
+        int id PK "공고ID"
+        text site "사이트"
+        text keyword "키워드"
+        text title "공고제목"
+        text company "회사명"
+        text location "근무지역"
+        text experience "경력"
+        text education "학력"
+        date deadline "마감일"
+        text link "공고링크"
+        timestamp crawled_at "수집일시"
+    }
+
+    STAGING_JOB_POSTINGS {
+        int id PK "공고ID"
+        text site "사이트"
+        text keyword "키워드"
+        text title "공고제목"
+        text company "회사명"
+        text region_sido "시도"
+        text region_detail "상세지역"
+        text experience_category "경력구분"
+        int experience_min_years "최소경력(년)"
+        text education_category "학력구분"
+        date deadline "마감일"
+        text link "공고링크"
+        timestamp crawled_at "수집일시"
+    }
+
+    MART_DAILY_POSTING_COUNT {
+        date crawled_date "수집일자"
+        text keyword "키워드"
+        text site "사이트"
+        bigint posting_count "공고 수"
+    }
+
+    MART_LOCATION_DISTRIBUTION {
+        text keyword "키워드"
+        text region_sido "시도"
+        bigint posting_count "공고 수"
+    }
+
+    MART_EXPERIENCE_DISTRIBUTION {
+        text keyword "키워드"
+        text experience_category "경력구분"
+        bigint posting_count "공고 수"
+        numeric avg_min_years "평균 최소경력(년)"
+    }
+
+    MART_CRAWL_RUN_LOG {
+        int id PK "로그ID"
+        timestamp run_at "실행일시"
+        text site "사이트"
+        text keyword "키워드"
+        int raw_count "수집건수"
+        int inserted_count "적재건수"
+    }
+
+    RAW_JOB_POSTINGS ||..|| STAGING_JOB_POSTINGS : "정규화 (id 동일)"
+    MART_DAILY_POSTING_COUNT ||..|{ STAGING_JOB_POSTINGS : "일자·키워드·사이트별 집계"
+    MART_LOCATION_DISTRIBUTION ||..|{ STAGING_JOB_POSTINGS : "키워드·시도별 집계"
+    MART_EXPERIENCE_DISTRIBUTION ||..|{ STAGING_JOB_POSTINGS : "키워드·경력구분별 집계"
+    MART_CRAWL_RUN_LOG ||..o{ RAW_JOB_POSTINGS : "실행 이력 (site·keyword 기준)"
+```
+
+- raw 1 / staging 1 / mart 4, 총 6개 테이블로 구성됩니다.
+- 컬럼별 상세 정의와 변환 규칙은 [데이터 항목 정의서](./docs/data-dictionary.md)를 참고하세요.
+
 ## 주요 설계 포인트
 
 - **3계층 분리**: 원본 보존(raw)과 정규화 로직(staging), 서빙용 집계(mart)를 분리해 정규화 규칙이 바뀌어도 원본부터 재처리 가능
