@@ -20,7 +20,7 @@
 - **mart**: 대시보드용 집계 테이블 3종(일별 건수, 지역 분포, 경력 분포)을 풀 리프레시 방식으로 재생성
 - **Django**: mart/staging 테이블을 `managed=False` 모델로 매핑해 읽기 전용으로 서빙
 - **Nginx**: HTTPS 종료, 정적 파일 서빙, 리버스 프록시
-- 더 자세한 다이어그램은 [`docs/architecture.md`](./docs/architecture.md) 참고.
+- 더 자세한 다이어그램은 [`아키텍처`](./docs/architecture.md) 참고.
 
 전체 스택은 Docker Compose로 컨테이너화되어 Oracle Cloud Infrastructure(OCI) 인스턴스에 배포되어 있습니다.
 
