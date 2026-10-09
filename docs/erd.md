@@ -67,7 +67,7 @@ erDiagram
     MART_DAILY_POSTING_COUNT ||..|{ STAGING_JOB_POSTINGS : "일자·키워드·사이트별 집계"
     MART_LOCATION_DISTRIBUTION ||..|{ STAGING_JOB_POSTINGS : "키워드·시도별 집계"
     MART_EXPERIENCE_DISTRIBUTION ||..|{ STAGING_JOB_POSTINGS : "키워드·경력구분별 집계"
-    MART_CRAWL_RUN_LOG ||..o{ RAW_JOB_POSTINGS : "실행 이력 (site·keyword 기준)"
+    MART_CRAWL_RUN_LOG ||..|{ STAGING_JOB_POSTINGS : "키워드·경력구분별 집계"
 ```
 
 ## 읽는 방법
